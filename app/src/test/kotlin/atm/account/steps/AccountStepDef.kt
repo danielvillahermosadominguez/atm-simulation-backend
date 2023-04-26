@@ -1,4 +1,4 @@
-package account
+package atm.account.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.PendingException
@@ -15,30 +15,30 @@ interface AccountLoginService {
 
 class AccountStepDef {
 
-    val accountLoginService = mockk<AccountLoginService>()
-
+    val accountLoginService = mockk<AccountLoginService>( relaxed = true)
+    var name = ""
+    var pin = ""
+    var balance = 0
+    var accountNumber = ""
+    var loginSuccessFull = false
     @Given("ATM with with the following records")
     fun atm_with_with_the_following_records(dataTable: DataTable) {
-        // Write code here that turns the phrase above into concrete actions
-        // For automatic transformation, change DataTable to one of
-        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-        // Double, Byte, Short, Long, BigInteger or BigDecimal.
-        //
-        // For other transformations you can register a DataTableType.
         val res = dataTable.asMaps()
-        val name = res[0].get("Name")
+        this.name = res[0].get("Name").toString()
+        this.pin = res[0].get("PIN").toString()
+        this.balance =  res[0].get("Balance").toString().toInt()
+        this.accountNumber = res[0].get("Account Number").toString()
     }
 
-    @When("An User try to log with account number {int} and PIN {int}")
+    @When("An User try to log with account number {string} and PIN {string}")
     fun an_user_try_to_log_with_account_number_and_pin(number: String, pin: String) {
         accountLoginService.login(Account(number, pin))
+        loginSuccessFull = true
     }
 
     @Then("User with account number {int} is logged")
     fun user_with_account_number_is_logged(int1: Int?) {
-        // Write code here that turns the phrase above into concrete actions
-        throw PendingException()
+        assert(loginSuccessFull)
     }
 
 }

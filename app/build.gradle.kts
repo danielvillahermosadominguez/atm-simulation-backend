@@ -42,6 +42,7 @@ dependencies {
     implementation("io.cucumber:cucumber-java:7.2.3")
     implementation("io.cucumber:cucumber-junit:7.2.3")
     testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.junit.vintage:junit-vintage-engine:5.9.2")
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.12.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
@@ -62,7 +63,7 @@ task("cucumber") {
             classpath = cucumberRuntime + sourceSets.main.get().output + sourceSets.test.get().output
             // Change glue for your project package where the step definitions are.
             // And where the feature files are.
-            args = listOf("--plugin", "pretty", "--glue", "org.example.steps", "src/test/resources/cucumber/features")
+            args = listOf("--plugin", "pretty", "--glue", "atm.account.steps", "src/test/resources/cucumber/features")
         }
     }
 }
