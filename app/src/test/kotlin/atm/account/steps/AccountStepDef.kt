@@ -1,7 +1,8 @@
 package atm.account.steps
 
-import atm.account.Account
+import atm.account.LoginAccount
 import atm.account.AccountLoginService
+import atm.account.AccountRepository
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -24,7 +25,7 @@ class AccountStepDef {
 
     @When("An User try to log with account number {string} and PIN {string}")
     fun an_user_try_to_log_with_account_number_and_pin(number: String, pin: String) {
-        this.loginOk = accountLoginService.login(Account(number, pin))
+        this.loginOk = accountLoginService.login(LoginAccount(number, pin))
     }
 
     @Then("User with account number {int} is logged")
