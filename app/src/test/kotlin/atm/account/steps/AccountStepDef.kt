@@ -1,18 +1,11 @@
 package atm.account.steps
 
+import atm.account.Account
+import atm.account.AccountLoginService
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-
-data class Account(val accountNumber: String, val pin: String)
-
-class AccountLoginService {
-    fun login(account: Account): Boolean = TODO()
-    fun addAccount(name: String, pin: String, balance: Int, accountNumber: String): Nothing = TODO()
-
-
-}
 
 class AccountStepDef {
 
