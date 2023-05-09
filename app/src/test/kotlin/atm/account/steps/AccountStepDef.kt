@@ -1,5 +1,6 @@
 package atm.account.steps
 
+import atm.account.Account
 import atm.account.LoginAccount
 import atm.account.AccountLoginService
 import atm.account.AccountRepository
@@ -7,11 +8,12 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
+import kotlin.test.assertTrue
 
 class AccountStepDef {
 
     private var loginOk: Boolean = false
-    val accountLoginService = AccountLoginService()
+    val accountLoginService = AccountLoginService(MemoryAccountRepository())
 
     @Given("ATM with with the following records")
     fun atm_with_with_the_following_records(dataTable: DataTable) {
@@ -30,7 +32,18 @@ class AccountStepDef {
 
     @Then("User with account number {int} is logged")
     fun user_with_account_number_is_logged(int1: Int?) {
-        assert(this.loginOk)
+        assertTrue(this.loginOk)
     }
 
+}
+
+class MemoryAccountRepository : AccountRepository {
+    private var accounts = emptyList<Account>()
+    override fun save(account: Account) {
+        this.accounts += account
+    }
+
+    override fun findById(id: String): Account? {
+       return this.accounts.find { it.accountNumber == id }
+    }
 }
