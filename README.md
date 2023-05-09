@@ -10,7 +10,7 @@ https://github.com/codurance/atm-simulation-exercise/blob/main/docs/Stage-I/ATM-
 # 05-05-2023 - Decisions:
 For the first iteration we want to:
 * [ ] Finish the requirements with this design and acceptance test 
-* [ ] Surely, persistence will be with a file. (To decide)
+* [x] Surely, persistence will be with a file. (To decide)
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.
 * [ ] Basic pipeline with compilation and tests
 

@@ -18,11 +18,13 @@ class AccountStepDef {
     @Given("ATM with with the following records")
     fun atm_with_with_the_following_records(dataTable: DataTable) {
         val res = dataTable.asMaps()
-        val name = res[0].get("Name").toString()
-        val pin = res[0].get("PIN").toString()
-        val balance = res[0].get("Balance").toString().toInt()
-        val accountNumber = res[0].get("Account Number").toString()
-        accountLoginService.addAccount(name, pin, balance, accountNumber)
+        for (entry in res) {
+            val name = entry.get("Name").toString()
+            val pin = entry.get("PIN").toString()
+            val balance = entry.get("Balance").toString().toInt()
+            val accountNumber = entry.get("Account Number").toString()
+            accountLoginService.addAccount(name, pin, balance, accountNumber)
+        }
     }
 
     @When("An User try to log with account number {string} and PIN {string}")
