@@ -8,4 +8,12 @@ Feature: Welcome Screen
     When An User try to log with account number '112244' and PIN '932012'
     Then User with account number 112244 is logged
 
+  Scenario Outline: Problem with the login
+    Given ATM ready to be used
+    When An User try to log with account number <account_number> and PIN <PIN>
+    Then the user should see the message <error>
+
+    Examples:
+      | account_number | PIN      | error                                                                   |
+      | '11224'        | '932012' | 'Account Number should have 6 digits length for invalid Account Number' |
 

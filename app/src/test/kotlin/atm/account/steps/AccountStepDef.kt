@@ -1,9 +1,9 @@
 package atm.account.steps
 
 import atm.account.Account
-import atm.account.LoginAccount
 import atm.account.AccountLoginService
 import atm.account.AccountRepository
+import atm.account.LoginAccount
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -14,6 +14,10 @@ class AccountStepDef {
 
     private var loginOk: Boolean = false
     val accountLoginService = AccountLoginService(MemoryAccountRepository())
+
+    @Given("ATM ready to be used")
+    fun atm_ready_to_be_used() {
+    }
 
     @Given("ATM with with the following records")
     fun atm_with_with_the_following_records(dataTable: DataTable) {
@@ -36,7 +40,9 @@ class AccountStepDef {
     fun user_with_account_number_is_logged(int1: Int?) {
         assertTrue(this.loginOk)
     }
-
+    @Then("the user should see the message {string}")
+    fun the_user_should_see_the_message(errorMessage: String?) {
+    }
 }
 
 class MemoryAccountRepository : AccountRepository {
