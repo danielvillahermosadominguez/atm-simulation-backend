@@ -1,5 +1,6 @@
 package atm.account.steps
 
+import arrow.core.Either
 import atm.account.Account
 import atm.account.AccountLoginService
 import atm.account.AccountRepository
@@ -8,11 +9,13 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AccountStepDef {
 
-    private var loginOk: Boolean = false
+    private var loginOk: Either<String, Unit> = Either.Left("Unknown")
+
     val accountLoginService = AccountLoginService(MemoryAccountRepository())
 
     @Given("ATM ready to be used")
@@ -38,10 +41,12 @@ class AccountStepDef {
 
     @Then("User with account number {int} is logged")
     fun user_with_account_number_is_logged(int1: Int?) {
-        assertTrue(this.loginOk)
+        assertTrue(this.loginOk.isRight())
     }
     @Then("the user should see the message {string}")
     fun the_user_should_see_the_message(errorMessage: String?) {
+        assertTrue(this.loginOk.isLeft())
+        assertEquals(errorMessage, this.loginOk.leftOrNull())
     }
 }
 

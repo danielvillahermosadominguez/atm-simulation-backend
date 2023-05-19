@@ -20,8 +20,8 @@ https://blog.mestwin.net/test-the-console-output-println-in-kotlin/
 # 16-05-2023
 For the first iteration we want to:
 * [ ] Finish the requirements with this design and acceptance test
-    * [ ] For this exercise we want to apply the concept of Either to controll errors !!!
-    * [ ] Account Number should have 6 digits length. Display message Account Number should have 6 digits length for invalid Account Number.
+    * [In progress] For this exercise we want to apply the concept of Either to controll errors !!!
+    * [In progress] Account Number should have 6 digits length. Display message Account Number should have 6 digits length for invalid Account Number.
     * [ ] Account Number should only contains numbers [0-9]. Display message Account Number should only contains numbers for invalid Account Number.
     * [ ] PIN should have 6 digits length. Display message PIN should have 6 digits length for invalid PIN.
     * [ ] PIN should only contains numbers [0-9]. Display message PIN should only contains numbers for invalid PIN.
@@ -30,3 +30,5 @@ For the first iteration we want to:
 * [x] Surely, persistence will be with a file. (To decide)
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.
 * [ ] Basic pipeline with compilation and tests
+
+(Vamos bajando del aceptance test a los unit test para trabajar la valiación)

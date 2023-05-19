@@ -9,6 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class AccountLoginServiceTest : FreeSpec({
 
@@ -27,7 +28,7 @@ class AccountLoginServiceTest : FreeSpec({
 
         val result = accountService.login(loginAccount)
 
-        assert(result)
+        assertTrue(result.isRight())
     }
 
     "addAccount should save in repository" {
@@ -54,7 +55,7 @@ class AccountLoginServiceTest : FreeSpec({
 
         val result = accountService.login(loginAccount)
 
-        assertFalse(result)
+        assertFalse(result.isRight())
     }
 
     "should not login in a non existing account" {
@@ -65,7 +66,7 @@ class AccountLoginServiceTest : FreeSpec({
 
         val result = accountService.login(loginAccount)
 
-        assertFalse(result)
+        assertFalse(result.isRight())
     }
 
 })

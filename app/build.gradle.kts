@@ -8,7 +8,7 @@
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -45,6 +45,8 @@ dependencies {
     //
     implementation("io.cucumber:cucumber-java:7.2.3")
     implementation("io.cucumber:cucumber-junit:7.2.3")
+
+
     testImplementation("org.assertj:assertj-core:3.22.0")
     testImplementation("org.junit.vintage:junit-vintage-engine:5.9.2")
     testImplementation(kotlin("test"))
@@ -52,6 +54,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.2.3")
+
+
+    implementation("io.arrow-kt:arrow-core:1.2.0-RC")
+
+
 }
 
 
