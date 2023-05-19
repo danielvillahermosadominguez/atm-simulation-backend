@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 
+
 # Log file
 *.log
 
@@ -32,3 +33,4 @@ build
 
 #idea
 .idea/
+!gradle/wrapper/gradle-wrapper.jar
