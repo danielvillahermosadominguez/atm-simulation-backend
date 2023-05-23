@@ -1,9 +1,13 @@
 package atm.account.unit
 
+import arrow.core.Either
+import arrow.core.right
+import arrow.core.rightIor
 import atm.account.Account
 import atm.account.AccountLoginService
 import atm.account.AccountRepository
 import atm.account.LoginAccount
+import atm.account.Validator
 import io.kotest.core.spec.style.FreeSpec
 import io.mockk.every
 import io.mockk.mockk
@@ -15,10 +19,12 @@ class AccountLoginServiceTest : FreeSpec({
 
     lateinit var repository: AccountRepository
     lateinit var accountService: AccountLoginService
+    lateinit var validator: Validator
 
     beforeEach {
+        validator = mockk(relaxed = true)
         repository = mockk(relaxed = true)
-        accountService = AccountLoginService(repository)
+        accountService = AccountLoginService(repository, validator)
     }
 
     "should login in an existing account" {
@@ -67,6 +73,17 @@ class AccountLoginServiceTest : FreeSpec({
         val result = accountService.login(loginAccount)
 
         assertFalse(result.isRight())
+    }
+
+    "should return a succesfull value" {
+        every { validator.validate(any())} returns Either.Right(Unit)
+        every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
+        val loginAccount = LoginAccount("112233", "012108")
+
+        val result = accountService.login(loginAccount)
+
+        assertTrue(result.isRight())
+        verify { validator.validate("112233") }
     }
 
 })
