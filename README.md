@@ -31,4 +31,4 @@ For the first iteration we want to:
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.
 * [ ] Basic pipeline with compilation and tests
 
-(Vamos bajando del aceptance test a los unit test para trabajar la valiación)
+(Vamos entrando en el Either)

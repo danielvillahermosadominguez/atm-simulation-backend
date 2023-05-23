@@ -9,9 +9,11 @@ import atm.account.AccountRepository
 import atm.account.LoginAccount
 import atm.account.Validator
 import io.kotest.core.spec.style.FreeSpec
+import io.mockk.called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -23,6 +25,7 @@ class AccountLoginServiceTest : FreeSpec({
 
     beforeEach {
         validator = mockk(relaxed = true)
+        every { validator.validate(any()) } returns Either.Right(Unit)
         repository = mockk(relaxed = true)
         accountService = AccountLoginService(repository, validator)
     }
@@ -75,7 +78,7 @@ class AccountLoginServiceTest : FreeSpec({
         assertFalse(result.isRight())
     }
 
-    "should return a succesfull value" {
+    "should return a successful value when validation is ok" {
         every { validator.validate(any())} returns Either.Right(Unit)
         every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
         val loginAccount = LoginAccount("112233", "012108")
@@ -83,6 +86,21 @@ class AccountLoginServiceTest : FreeSpec({
         val result = accountService.login(loginAccount)
 
         assertTrue(result.isRight())
+        verify { validator.validate("112233") }
+    }
+
+    "should return a error value when validation fails" {
+        val message = "A message"
+        every { validator.validate(any())} returns Either.Left(message)
+        every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
+
+        val loginAccount = LoginAccount("112233", "012108")
+
+        val result = accountService.login(loginAccount)
+
+        assertTrue(result.isLeft())
+        assertEquals(message, result.leftOrNull())
+        verify(exactly = 0) { repository.findById(any()) }
         verify { validator.validate("112233") }
     }
 

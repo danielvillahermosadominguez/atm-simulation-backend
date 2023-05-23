@@ -1,20 +1,41 @@
 package atm.account
 
 import arrow.core.Either
-import arrow.core.right
+import arrow.core.flatMap
 
 data class LoginAccount(val accountNumber: String, val pin: String)
 
 class AccountLoginService(val repository: AccountRepository = AccountRepository.apply(), val validator: Validator = Validator()) {
     fun login(loginAccount: LoginAccount): Either<String, Unit> {
-        validator.validate(loginAccount.accountNumber)
+        /*
+        //Either1 (OK) + Either2(NOK) -> Either2(OK)
+         */
+        return validator.validate(loginAccount.accountNumber)
+                .flatMap { loginService(loginAccount) }
+
+        /*
+        //Either 1
+        val validateResult = validator.validate(loginAccount.accountNumber)
+        if(validateResult.isLeft()) {
+            return validateResult
+        }
+
+        //Either 1
+        val result = loginService(loginAccount)
+        return result
+
+        //Either1 (OK) + Either2(NOK) -> Either2(NOK)
+
+         */
+    }
+
+    private fun loginService(loginAccount: LoginAccount): Either<String, Unit> {
         val account = repository.findById(loginAccount.accountNumber)
-        if(account === null) {
+        if (account === null) {
             return Either.Left("Unimplemented (account null)")
         }
-        if( account.pin == loginAccount.pin ) return Either.Right(Unit)
+        if (account.pin == loginAccount.pin) return Either.Right(Unit)
         return Either.Left("Unimplemented (pin not equal)")
-
     }
 
     fun addAccount(name: String, pin: String, balance: Int, accountNumber: String): Unit {
