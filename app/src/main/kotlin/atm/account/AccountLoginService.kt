@@ -7,26 +7,8 @@ data class LoginAccount(val accountNumber: String, val pin: String)
 
 class AccountLoginService(val repository: AccountRepository = AccountRepository.apply(), val validator: Validator = Validator()) {
     fun login(loginAccount: LoginAccount): Either<String, Unit> {
-        /*
-        //Either1 (OK) + Either2(NOK) -> Either2(OK)
-         */
         return validator.validate(loginAccount.accountNumber)
                 .flatMap { loginService(loginAccount) }
-
-        /*
-        //Either 1
-        val validateResult = validator.validate(loginAccount.accountNumber)
-        if(validateResult.isLeft()) {
-            return validateResult
-        }
-
-        //Either 1
-        val result = loginService(loginAccount)
-        return result
-
-        //Either1 (OK) + Either2(NOK) -> Either2(NOK)
-
-         */
     }
 
     private fun loginService(loginAccount: LoginAccount): Either<String, Unit> {

@@ -39,7 +39,7 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.12.4")
 
-    testImplementation("io.kotest:kotest-runner-junit5:5.3.2")
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
 
 
     //
@@ -54,6 +54,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.2.3")
+
+    testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.2.5")
 
 
     implementation("io.arrow-kt:arrow-core:1.2.0-RC")
