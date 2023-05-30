@@ -20,9 +20,9 @@ https://blog.mestwin.net/test-the-console-output-println-in-kotlin/
 # 16-05-2023
 For the first iteration we want to:
 * [ ] Finish the requirements with this design and acceptance test
-    * [In progress] For this exercise we want to apply the concept of Either to controll errors !!!
-    * [In progress] Account Number should have 6 digits length. Display message Account Number should have 6 digits length for invalid Account Number.
-    * [ ] Account Number should only contains numbers [0-9]. Display message Account Number should only contains numbers for invalid Account Number.
+    * [x] For this exercise we want to apply the concept of Either to controll errors !!!
+    * [x] Account Number should have 6 digits length. Display message Account Number should have 6 digits length for invalid Account Number.
+    * [x] Account Number should only contains numbers [0-9]. Display message Account Number should only contains numbers for invalid Account Number.
     * [ ] PIN should have 6 digits length. Display message PIN should have 6 digits length for invalid PIN.
     * [ ] PIN should only contains numbers [0-9]. Display message PIN should only contains numbers for invalid PIN.
     * [ ] Check valid Account Number & PIN with ATM records. Display message Invalid Account Number/PIN if records is not exist.
@@ -31,4 +31,6 @@ For the first iteration we want to:
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.
 * [ ] Basic pipeline with compilation and tests
 
-(Vamos entrando en el Either)
+!Nos gustaria seguir el test del validator y aplicar Property Test Functions
+https://kotest.io/docs/proptest/property-test-functions.html
+
