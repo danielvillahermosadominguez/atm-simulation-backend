@@ -4,6 +4,7 @@ import arrow.core.Either
 
 class Validator {
     fun validate(account: String) : Either<String, Unit> {
+        println("account " + account)
         if (!account.all { char -> char.isDigit() }) {
             return Either.Left("Account Number should only contains numbers for invalid Account Number")
         }

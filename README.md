@@ -29,8 +29,8 @@ For the first iteration we want to:
     * [ ] Valid Account Number & PIN will take user to Transaction Screen.
 * [x] Surely, persistence will be with a file. (To decide)
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.
-* [ ] Basic pipeline with compilation and tests
+* [x] Basic pipeline with compilation and tests
 
-!Nos gustaria seguir el test del validator y aplicar Property Test Functions
-https://kotest.io/docs/proptest/property-test-functions.html
+Needed validation of PIN
 
+Explorar alguna librería de "bus" / event source approach
