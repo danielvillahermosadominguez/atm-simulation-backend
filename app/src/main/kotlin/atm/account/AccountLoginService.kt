@@ -8,6 +8,7 @@ data class LoginAccount(val accountNumber: String, val pin: String)
 class AccountLoginService(val repository: AccountRepository = AccountRepository.apply(), val validator: Validator = Validator()) {
     fun login(loginAccount: LoginAccount): Either<String, Unit> {
         return validator.validate(loginAccount.accountNumber)
+                .flatMap { validator.validate(loginAccount.pin) }
                 .flatMap { loginService(loginAccount) }
     }
 
