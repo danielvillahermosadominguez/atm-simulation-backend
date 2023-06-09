@@ -14,6 +14,8 @@ Feature: Welcome Screen
     Then the user should see the message <error>
 
     Examples:
-      | account_number | PIN      | error                                                                   |
-      | '11224'        | '932012' | 'Account Number should have 6 digits length for invalid Account Number' |
+      | account_number | PIN      | error                                                                    |
+      | '11224'        | '932012' | 'Account Number should have 6 digits length for invalid Account Number'  |
+      | '1122a'        | '932012' | 'Account Number should only contains numbers for invalid Account Number' |
+      | '112245'       | '9320'   | 'PIN should have 6 digits length for invalid PIN'                        |
 
