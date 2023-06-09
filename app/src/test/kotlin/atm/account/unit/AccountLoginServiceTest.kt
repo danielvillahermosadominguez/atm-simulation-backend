@@ -90,7 +90,7 @@ class AccountLoginServiceTest : FreeSpec({
 
     "should return a error value when validation fails" {
         val message = "A message"
-        every { validator.validate(any())} returns Either.Left(message)
+        every { validator.validate("112233")} returns Either.Left(message)
         every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
 
         val loginAccount = LoginAccount("112233", "012108")
@@ -105,16 +105,19 @@ class AccountLoginServiceTest : FreeSpec({
 
     "should return a error value when pin validation fails" {
         val noCorrectPIN = "01210"
+        val accountNumber = "112233"
         val message = "PIN should have 6 digits length for invalid PIN"
-        every { validator.validate(any())} returns Either.Left(message)
+        every { validator.validate(noCorrectPIN)} returns Either.Left(message)
+        every { validator.validate(accountNumber)} returns Either.Right(Unit)
         every { repository.findById("112245") } returns Account("John Doe", "CORRECT_PASSWORD", 100, "112245")
 
-        val loginAccount = LoginAccount("112233", noCorrectPIN)
+        val loginAccount = LoginAccount(accountNumber, noCorrectPIN)
 
         val result = accountService.login(loginAccount)
 
         assertTrue(result.isLeft())
         assertEquals(message, result.leftOrNull())
+        verify(exactly = 0) { repository.findById(any()) }
         verify { validator.validate("01210") }
     }
 })
