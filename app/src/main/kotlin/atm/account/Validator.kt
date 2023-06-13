@@ -3,7 +3,7 @@ package atm.account
 import arrow.core.Either
 
 
-class Validator(val translator: (ValidatorErrors) -> String = { translateAccountMessage(it) }) {
+class Validator(val translator: (ValidatorErrors) -> String) {
 
     fun validate(account: String): Either<String, Unit> {
         if (!account.all { char -> char.isDigit() }) {

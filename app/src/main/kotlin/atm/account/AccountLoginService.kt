@@ -5,10 +5,13 @@ import arrow.core.flatMap
 
 data class LoginAccount(val accountNumber: String, val pin: String)
 
-class AccountLoginService(val repository: AccountRepository = AccountRepository.apply(), val validator: Validator = Validator()) {
+class AccountLoginService constructor(
+        private val repository: AccountRepository = AccountRepository.apply(),
+        private val validatorAccount: Validator = Validator { translateAccountMessage(it) },
+        private val validatorPin: Validator = Validator { translatePINMessage(it) }) {
     fun login(loginAccount: LoginAccount): Either<String, Unit> {
-        return validator.validate(loginAccount.accountNumber)
-                .flatMap { validator.validate(loginAccount.pin) }
+        return validatorAccount.validate(loginAccount.accountNumber)
+                .flatMap { validatorPin.validate(loginAccount.pin) }
                 .flatMap { loginService(loginAccount) }
     }
 

@@ -20,13 +20,16 @@ class AccountLoginServiceTest : FreeSpec({
 
     lateinit var repository: AccountRepository
     lateinit var accountService: AccountLoginService
-    lateinit var validator: Validator
+    lateinit var validatorAccount: Validator
+    lateinit var validatorPin: Validator
 
     beforeEach {
-        validator = mockk(relaxed = true)
-        every { validator.validate(any()) } returns Either.Right(Unit)
+        validatorAccount = mockk(relaxed = true)
+        every { validatorAccount.validate(any()) } returns Either.Right(Unit)
+        validatorPin = mockk(relaxed = true)
+        every { validatorPin.validate(any()) } returns Either.Right(Unit)
         repository = mockk(relaxed = true)
-        accountService = AccountLoginService(repository, validator)
+        accountService = AccountLoginService(repository, validatorAccount, validatorPin)
     }
 
     "should login in an existing account" {
@@ -78,19 +81,19 @@ class AccountLoginServiceTest : FreeSpec({
     }
 
     "should return a successful value when validation is ok" {
-        every { validator.validate(any())} returns Either.Right(Unit)
+        every { validatorAccount.validate(any())} returns Either.Right(Unit)
         every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
         val loginAccount = LoginAccount("112233", "012108")
 
         val result = accountService.login(loginAccount)
 
         assertTrue(result.isRight())
-        verify { validator.validate("112233") }
+        verify { validatorAccount.validate("112233") }
     }
 
     "should return a error value when validation fails" {
         val message = "A message"
-        every { validator.validate("112233")} returns Either.Left(message)
+        every { validatorAccount.validate("112233")} returns Either.Left(message)
         every { repository.findById("112233") } returns Account("John Doe", "012108", 100, "112233")
 
         val loginAccount = LoginAccount("112233", "012108")
@@ -100,15 +103,15 @@ class AccountLoginServiceTest : FreeSpec({
         assertTrue(result.isLeft())
         assertEquals(message, result.leftOrNull())
         verify(exactly = 0) { repository.findById(any()) }
-        verify { validator.validate("112233") }
+        verify { validatorAccount.validate("112233") }
     }
 
     "should return a error value when pin validation fails" {
         val noCorrectPIN = "01210"
         val accountNumber = "112233"
         val message = "PIN should have 6 digits length for invalid PIN"
-        every { validator.validate(noCorrectPIN)} returns Either.Left(message)
-        every { validator.validate(accountNumber)} returns Either.Right(Unit)
+        every { validatorPin.validate(noCorrectPIN)} returns Either.Left(message)
+        every { validatorAccount.validate(accountNumber)} returns Either.Right(Unit)
         every { repository.findById("112245") } returns Account("John Doe", "CORRECT_PASSWORD", 100, "112245")
 
         val loginAccount = LoginAccount(accountNumber, noCorrectPIN)
@@ -118,6 +121,6 @@ class AccountLoginServiceTest : FreeSpec({
         assertTrue(result.isLeft())
         assertEquals(message, result.leftOrNull())
         verify(exactly = 0) { repository.findById(any()) }
-        verify { validator.validate("01210") }
+        verify { validatorPin.validate(noCorrectPIN) }
     }
 })

@@ -4,8 +4,8 @@ For the first iteration we want to:
     * [x] For this exercise we want to apply the concept of Either to controll errors !!!
     * [x] Account Number should have 6 digits length. Display message Account Number should have 6 digits length for invalid Account Number.
     * [x] Account Number should only contains numbers [0-9]. Display message Account Number should only contains numbers for invalid Account Number.
-    * [In progress] PIN should have 6 digits length. Display message PIN should have 6 digits length for invalid PIN.
-    * [ ] PIN should only contains numbers [0-9]. Display message PIN should only contains numbers for invalid PIN.
+    * [X] PIN should have 6 digits length. Display message PIN should have 6 digits length for invalid PIN.
+    * [X] PIN should only contains numbers [0-9]. Display message PIN should only contains numbers for invalid PIN.
     * [ ] Check valid Account Number & PIN with ATM records. Display message Invalid Account Number/PIN if records is not exist.
     * [ ] Valid Account Number & PIN will take user to Transaction Screen.
 * [x] Surely, persistence will be with a file. (To decide)

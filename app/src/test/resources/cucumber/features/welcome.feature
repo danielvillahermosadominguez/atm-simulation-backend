@@ -18,4 +18,5 @@ Feature: Welcome Screen
       | '11224'        | '932012' | 'Account Number should have 6 digits length for invalid Account Number'  |
       | '1122a'        | '932012' | 'Account Number should only contains numbers for invalid Account Number' |
       | '112245'       | '9320'   | 'PIN should have 6 digits length for invalid PIN'                        |
+      | '112245'       | '9320a'  | 'PIN should only contains numbers for invalid PIN'                        |
 
