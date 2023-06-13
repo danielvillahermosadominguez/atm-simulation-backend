@@ -2,19 +2,18 @@ package atm.account
 
 import arrow.core.Either
 
-class Validator {
 
-    fun validate(account: String) : Either<String, Unit> {
-        println("account " + account)
+class Validator(val translator: (ValidatorErrors) -> String = { translateAccountMessage(it) }) {
+
+    fun validate(account: String): Either<String, Unit> {
         if (!account.all { char -> char.isDigit() }) {
-            return Either.Left("Account Number should only contains numbers for invalid Account Number")
+            return Either.Left(translator(ValidatorErrors.ALL_DIGITS))
         }
 
         if (account.length !== 6) {
-            return Either.Left("Account Number should have 6 digits length for invalid Account Number")
+            return Either.Left(translator(ValidatorErrors.SIX_DIGITS))
         }
 
         return Either.Right(Unit)
     }
-
 }
