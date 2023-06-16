@@ -1,11 +1,13 @@
 package atm.account.unit
 
 import arrow.core.Either
+import arrow.core.right
 import atm.account.Account
 import atm.account.AccountLoginService
 import atm.account.AccountRepository
 import atm.account.LoginAccount
 import atm.account.Validator
+import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FreeSpec
 import io.mockk.every
 import io.mockk.mockk
@@ -67,17 +69,19 @@ class AccountLoginServiceTest : FreeSpec({
         val result = accountService.login(loginAccount)
 
         assertFalse(result.isRight())
+        assertEquals("Invalid Account Number/PIN", result.leftOrNull())
     }
 
     "should not login in a non existing account" {
 
-        every { repository.findById("112233") } returns null
+        every { repository.findById("non existing account" ) } returns null
 
         val loginAccount = LoginAccount("non existing account", "wrong pin")
 
         val result = accountService.login(loginAccount)
 
         assertFalse(result.isRight())
+        assertEquals("Invalid Account Number/PIN", result.leftOrNull())
     }
 
     "should return a successful value when validation is ok" {

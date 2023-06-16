@@ -6,7 +6,7 @@ For the first iteration we want to:
     * [x] Account Number should only contains numbers [0-9]. Display message Account Number should only contains numbers for invalid Account Number.
     * [X] PIN should have 6 digits length. Display message PIN should have 6 digits length for invalid PIN.
     * [X] PIN should only contains numbers [0-9]. Display message PIN should only contains numbers for invalid PIN.
-    * [ ] Check valid Account Number & PIN with ATM records. Display message Invalid Account Number/PIN if records is not exist.
+    * [X] Check valid Account Number & PIN with ATM records. Display message Invalid Account Number/PIN if records is not exist.
     * [ ] Valid Account Number & PIN will take user to Transaction Screen.
 * [x] Surely, persistence will be with a file. (To decide)
 * [ ] Console program implementation: it will be basic and without acceptance tests, but we could use unit tests.

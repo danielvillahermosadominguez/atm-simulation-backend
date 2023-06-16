@@ -18,10 +18,10 @@ class AccountLoginService constructor(
     private fun loginService(loginAccount: LoginAccount): Either<String, Unit> {
         val account = repository.findById(loginAccount.accountNumber)
         if (account === null) {
-            return Either.Left("Unimplemented (account null)")
+            return Either.Left("Invalid Account Number/PIN")
         }
         if (account.pin == loginAccount.pin) return Either.Right(Unit)
-        return Either.Left("Unimplemented (pin not equal)")
+        return Either.Left("Invalid Account Number/PIN")
     }
 
     fun addAccount(name: String, pin: String, balance: Int, accountNumber: String): Unit {
