@@ -1,4 +1,4 @@
-package atm.account
+package atm.account.domain
 
 import arrow.core.Either
 

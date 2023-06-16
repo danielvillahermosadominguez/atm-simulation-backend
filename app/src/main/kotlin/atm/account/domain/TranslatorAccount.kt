@@ -1,5 +1,7 @@
 package atm.account
 
+import atm.account.domain.ValidatorErrors
+
 fun translateAccountMessage(allDigitsMessage: ValidatorErrors): String =
         when (allDigitsMessage) {
             ValidatorErrors.ALL_DIGITS -> "Account Number should only contains numbers for invalid Account Number"

@@ -1,4 +1,4 @@
-package atm.account
+package atm.account.domain
 
 interface AccountRepository {
     fun save(account: Account)

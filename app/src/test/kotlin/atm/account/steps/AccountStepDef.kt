@@ -1,10 +1,9 @@
 package atm.account.steps
 
 import arrow.core.Either
-import atm.account.Account
 import atm.account.AccountLoginService
-import atm.account.AccountRepository
 import atm.account.LoginAccount
+import atm.account.infrastructure.MemoryAccountRepository
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -50,13 +49,3 @@ class AccountStepDef {
     }
 }
 
-class MemoryAccountRepository : AccountRepository {
-    private var accounts = emptyList<Account>()
-    override fun save(account: Account) {
-        this.accounts += account
-    }
-
-    override fun findById(id: String): Account? {
-       return this.accounts.find { it.accountNumber == id }
-    }
-}

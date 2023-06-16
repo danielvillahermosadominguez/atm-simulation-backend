@@ -1,13 +1,11 @@
 package atm.account.unit
 
 import arrow.core.Either
-import arrow.core.right
-import atm.account.Account
+import atm.account.domain.Account
 import atm.account.AccountLoginService
-import atm.account.AccountRepository
+import atm.account.domain.AccountRepository
 import atm.account.LoginAccount
-import atm.account.Validator
-import io.kotest.assertions.arrow.core.shouldBeRight
+import atm.account.domain.Validator
 import io.kotest.core.spec.style.FreeSpec
 import io.mockk.every
 import io.mockk.mockk

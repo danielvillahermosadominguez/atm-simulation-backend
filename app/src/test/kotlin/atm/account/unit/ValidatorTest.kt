@@ -1,7 +1,7 @@
 package atm.account.unit
 
-import atm.account.Validator
-import atm.account.ValidatorErrors
+import atm.account.domain.Validator
+import atm.account.domain.ValidatorErrors
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.StringSpec
