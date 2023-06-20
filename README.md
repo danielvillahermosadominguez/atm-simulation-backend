@@ -26,5 +26,8 @@ Ahora nos encontramos tratando de diseñar la consola y como vamos a trabajar co
         https://www.slideshare.net/jonsimon2/command-and-adapter-pattern
     - 
 
+Vamos explorando como comunicarnos con la consola:
+  - Channels
+  - Corutinas de kotlin
 
 
