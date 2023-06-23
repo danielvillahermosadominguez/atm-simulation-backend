@@ -1,3 +1,5 @@
+https://github.com/codurance/atm-simulation-exercise/tree/main
+
 # 09-06-2023
 For the first iteration we want to:
 * [ ] Finish the requirements with this design and acceptance test
