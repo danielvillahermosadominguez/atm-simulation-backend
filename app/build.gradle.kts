@@ -59,6 +59,7 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.2.5")
 
     implementation("io.arrow-kt:arrow-core:1.2.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
 
 }

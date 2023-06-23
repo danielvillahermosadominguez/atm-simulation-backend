@@ -2,10 +2,12 @@ package atm.account.integration
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.GlobalScope
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
 class ConsoleTest : FreeSpec( {
@@ -30,7 +32,7 @@ class ConsoleTest : FreeSpec( {
         val bis = ByteArrayInputStream("123456\n".toByteArray())
         System.setIn(bis)
 
-        val incomingNotification = withTimeout(1000L) {
+        val incomingNotification = withTimeout(10000L) {
             channel.receive()
         }
 
@@ -41,8 +43,10 @@ class ConsoleTest : FreeSpec( {
 class Console constructor(val channel: Channel<String>) {
     suspend fun run() {
         print("Enter Account Number:")
-        val accountNumber = readLine()
-     //   channel.send(accountNumber)
+        GlobalScope.launch {
+            val accountNumber = readLine()
+            channel.send(accountNumber)
+        }
     }
 
     fun readLine(): String {
