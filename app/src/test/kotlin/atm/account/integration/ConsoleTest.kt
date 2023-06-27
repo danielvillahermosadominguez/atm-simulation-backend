@@ -1,6 +1,8 @@
 package atm.account.integration
 
+import io.kotest.assertions.timing.eventually
 import io.kotest.core.spec.style.FreeSpec
+import io.kotest.framework.concurrency.eventually
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.GlobalScope
 import java.io.ByteArrayInputStream
@@ -19,7 +21,7 @@ class ConsoleTest : FreeSpec( {
         val (baos, old) = initCaptureOutput()
         console.run()
         val written = String(baos.toByteArray())
-        written shouldBe "Enter Account Number:"
+        written shouldBe "Enter Account Number: "
         endCaptureOutput(old)
     }
 
@@ -38,14 +40,35 @@ class ConsoleTest : FreeSpec( {
 
         incomingNotification shouldBe "123456"
     }
+
+    "should show a text asking the PIN" {
+        val channel = Channel<String>()
+        val console = Console(channel)
+        val (baos, old) = initCaptureOutput()
+        val bis = ByteArrayInputStream("123456\n".toByteArray())
+        System.setIn(bis)
+        console.run()
+        withTimeout(10000L) {
+            channel.receive()
+        }
+
+        eventually(10000L) {
+            val written = String(baos.toByteArray())
+            written shouldBe "Enter Account Number: 123456${System.lineSeparator()}Enter PIN: "
+        }
+
+        endCaptureOutput(old)
+    }
 } )
 
 class Console constructor(val channel: Channel<String>) {
     suspend fun run() {
-        print("Enter Account Number:")
+        print("Enter Account Number: ")
         GlobalScope.launch {
             val accountNumber = readLine()
+            println(accountNumber)
             channel.send(accountNumber)
+            print("Enter PIN: ")
         }
     }
 

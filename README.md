@@ -15,21 +15,9 @@ For the first iteration we want to:
   * Explorar alguna librería de "bus" / event source approach
 * [x] Basic pipeline with compilation and tests
 
-Ahora nos encontramos tratando de diseñar la consola y como vamos a trabajar con ella.
-
-- En principio pensamos que la consola será un objeto con el que interactuaremos. Algunas 
-  ideas:
-  - La consola escribira por pantalla los mensajes. Eso lo hemos testeado en otros casos
-  - La consola podria recibir mensajes del servicio y el servicio contestarle asincronamente,
-    por lo que ¿como lo haria? colas?
-  - ¿como va a interactuar el usuario con la consola?
-    - Quiza user-> console -> commands <- adapter -> service
-      - y service->notification->adapter->notificationInterface->console
-        https://www.slideshare.net/jonsimon2/command-and-adapter-pattern
-    - 
-
-Vamos explorando como comunicarnos con la consola:
-  - Channels
-  - Corutinas de kotlin
+Replantear el como estamos haciendo lo de los test de consola
+  - Maquina de estado
+  - Interfaz a la consola
+  - Algo clasico de hilos
 
 
