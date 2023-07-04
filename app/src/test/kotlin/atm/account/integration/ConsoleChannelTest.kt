@@ -1,6 +1,5 @@
 package atm.account.integration
 
-import io.kotest.assertions.timing.eventually
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.framework.concurrency.eventually
 import io.kotest.matchers.shouldBe
@@ -12,7 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
-class ConsoleTest : FreeSpec( {
+class ConsoleChannelTest : FreeSpec( {
 
     "should show the welcome screen asking for the account number" {
         val channel = Channel<String>()
@@ -22,7 +21,7 @@ class ConsoleTest : FreeSpec( {
         console.run()
         val written = String(baos.toByteArray())
         written shouldBe "Enter Account Number: "
-        endCaptureOutput(old)
+        restoreOutput(old)
     }
 
     "should read account number" {
@@ -57,7 +56,7 @@ class ConsoleTest : FreeSpec( {
             written shouldBe "Enter Account Number: 123456${System.lineSeparator()}Enter PIN: "
         }
 
-        endCaptureOutput(old)
+        restoreOutput(old)
     }
 } )
 
@@ -85,7 +84,7 @@ class Console constructor(val channel: Channel<String>) {
     }
 }
 
-private fun endCaptureOutput(old: PrintStream) {
+private fun restoreOutput(old: PrintStream) {
     System.out.flush()
     System.setOut(old)
 }
