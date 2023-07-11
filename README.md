@@ -15,9 +15,7 @@ For the first iteration we want to:
   * Explorar alguna librería de "bus" / event source approach
 * [x] Basic pipeline with compilation and tests
 
-Replantear el como estamos haciendo lo de los test de consola
-  - Maquina de estado
-  - Interfaz a la consola
-  - Algo clasico de hilos
-
+Estamos con los threads. Actualmente el ultimo test "  "should ask for a pin" funciona si
+lo ejecutamos por separado (tenemos que comentar el resto por un problema que nos da). Pero
+si lo ejecutamos en conjunto con el resto da error.
 

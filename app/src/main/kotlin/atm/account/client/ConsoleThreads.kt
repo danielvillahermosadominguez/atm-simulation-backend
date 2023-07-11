@@ -13,7 +13,7 @@ class ConsoleThreads(val callback: ConsoleCallback) {
         thread(isDaemon = true) {
             while (true) {
                 val input = readLine()
-                if (!input.isNullOrBlank()) {
+                if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
                     println()
                     print("Enter PIN: ")
@@ -23,7 +23,7 @@ class ConsoleThreads(val callback: ConsoleCallback) {
         print("Enter Account Number: ")
     }
 
-    fun readLine(): String {
+    fun readLine(): String? {
         val reader = BufferedReader(
                 InputStreamReader(System.`in`)
         )

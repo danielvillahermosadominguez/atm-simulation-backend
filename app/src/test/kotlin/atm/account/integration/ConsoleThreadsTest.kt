@@ -3,6 +3,7 @@ package atm.account.integration
 import atm.account.client.ConsoleCallback
 import atm.account.client.ConsoleThreads
 import io.kotest.core.spec.style.FreeSpec
+import io.kotest.framework.concurrency.eventually
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
 import io.mockk.verify
@@ -11,8 +12,8 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
 class ConsoleThreadsTest : FreeSpec({
-    /*
-    "should show the welcome screen asking for the account number" {
+
+  /*  "should show the welcome screen asking for the account number" {
         val callback: ConsoleCallback = mockk(relaxed = true)
         val console = ConsoleThreads(callback)
 
@@ -34,8 +35,7 @@ class ConsoleThreadsTest : FreeSpec({
         verify { callback.userInput("123456") }
 
         bis.close()
-    }
-     */
+    }*/
 
     "should ask for a pin" {
         val callback: ConsoleCallback = mockk(relaxed = true)
@@ -45,10 +45,12 @@ class ConsoleThreadsTest : FreeSpec({
 
         val (fakeStandardOutput, old) = initCaptureOutput()
         console.run()
-        Thread.sleep(1000)
-        val written = String(fakeStandardOutput.toByteArray())
-        written shouldBe """Enter Account Number: 
-            |Enter PIN: """.trimMargin()
+
+        eventually(1000L) {
+            val written = String(fakeStandardOutput.toByteArray())
+            written shouldBe "Enter Account Number: " +System.lineSeparator()  + "Enter PIN: "
+        }
+
         restoreOutput(old)
     }
 })
