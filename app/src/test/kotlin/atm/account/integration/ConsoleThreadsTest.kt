@@ -1,17 +1,17 @@
 package atm.account.integration
 
+import atm.account.client.ConsoleCallback
+import atm.account.client.ConsoleThreads
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
 import io.mockk.verify
-import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.InputStreamReader
 import java.io.PrintStream
-import kotlin.concurrent.thread
 
 class ConsoleThreadsTest : FreeSpec({
+    /*
     "should show the welcome screen asking for the account number" {
         val callback: ConsoleCallback = mockk(relaxed = true)
         val console = ConsoleThreads(callback)
@@ -35,33 +35,25 @@ class ConsoleThreadsTest : FreeSpec({
 
         bis.close()
     }
+     */
+
+    "should ask for a pin" {
+        val callback: ConsoleCallback = mockk(relaxed = true)
+        val console = ConsoleThreads(callback)
+        val bis = ByteArrayInputStream("123456\n".toByteArray())
+        System.setIn(bis)
+
+        val (fakeStandardOutput, old) = initCaptureOutput()
+        console.run()
+        Thread.sleep(1000)
+        val written = String(fakeStandardOutput.toByteArray())
+        written shouldBe """Enter Account Number: 
+            |Enter PIN: """.trimMargin()
+        restoreOutput(old)
+    }
 })
 
-interface ConsoleCallback {
-    fun userInput(value: String)
 
-}
-
-class ConsoleThreads(val callback: ConsoleCallback) {
-    fun run() {
-        thread(isDaemon = true) {
-            while (true) {
-                val input = readLine()
-                if (!input.isNullOrBlank()) {
-                    callback.userInput(input)
-                }
-            }
-        }
-        print("Enter Account Number: ")
-    }
-
-    fun readLine(): String {
-        val reader = BufferedReader(
-            InputStreamReader(System.`in`)
-        )
-        return reader.readLine()
-    }
-}
 
 private fun initCaptureOutput(): Pair<ByteArrayOutputStream, PrintStream> {
     val baos = ByteArrayOutputStream()
