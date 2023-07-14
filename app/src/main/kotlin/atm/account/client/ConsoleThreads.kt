@@ -9,9 +9,11 @@ interface ConsoleCallback {
 
 }
 class ConsoleThreads(val callback: ConsoleCallback) {
+    private var isAlive = true
+    private lateinit var thread:Thread
     fun run() {
-        thread(isDaemon = true) {
-            while (true) {
+        thread = thread(isDaemon = true) {
+            while (isAlive) {
                 val input = readLine()
                 if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
@@ -28,5 +30,10 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                 InputStreamReader(System.`in`)
         )
         return reader.readLine()
+    }
+
+    fun stop() {
+        isAlive = false
+        thread.join()
     }
 }

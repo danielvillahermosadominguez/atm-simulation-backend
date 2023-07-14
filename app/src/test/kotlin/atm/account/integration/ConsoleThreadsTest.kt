@@ -13,7 +13,7 @@ import java.io.PrintStream
 
 class ConsoleThreadsTest : FreeSpec({
 
-  /*  "should show the welcome screen asking for the account number" {
+    "should show the welcome screen asking for the account number" {
         val callback: ConsoleCallback = mockk(relaxed = true)
         val console = ConsoleThreads(callback)
 
@@ -22,25 +22,27 @@ class ConsoleThreadsTest : FreeSpec({
         val written = String(fakeStandardOutput.toByteArray())
         written shouldBe "Enter Account Number: "
         restoreOutput(old)
+        console.stop()
     }
 
     "should read account number" {
         val callback: ConsoleCallback = mockk(relaxed = true)
         val console = ConsoleThreads(callback)
-        val bis = ByteArrayInputStream("123456\n".toByteArray())
+        val bis = ByteArrayInputStream(("123456"+System.lineSeparator()).toByteArray())
         System.setIn(bis)
 
         console.run()
-
-        verify { callback.userInput("123456") }
-
+        eventually(1000L) {
+            verify { callback.userInput("123456") }
+        }
         bis.close()
-    }*/
+        console.stop()
+    }
 
     "should ask for a pin" {
         val callback: ConsoleCallback = mockk(relaxed = true)
         val console = ConsoleThreads(callback)
-        val bis = ByteArrayInputStream("123456\n".toByteArray())
+        val bis = ByteArrayInputStream(("123456"+System.lineSeparator()).toByteArray())
         System.setIn(bis)
 
         val (fakeStandardOutput, old) = initCaptureOutput()
@@ -52,6 +54,7 @@ class ConsoleThreadsTest : FreeSpec({
         }
 
         restoreOutput(old)
+        console.stop()
     }
 })
 
