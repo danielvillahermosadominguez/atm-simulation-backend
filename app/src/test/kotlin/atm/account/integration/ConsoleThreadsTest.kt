@@ -13,51 +13,55 @@ import java.io.PrintStream
 
 class ConsoleThreadsTest : FreeSpec({
 
-    "should show the welcome screen asking for the account number" {
-        val callback: ConsoleCallback = mockk(relaxed = true)
-        val console = ConsoleThreads(callback)
+    lateinit var callback: ConsoleCallback
+    lateinit var console: ConsoleThreads
 
+    beforeEach {
+        callback = mockk(relaxed = true)
+        console = ConsoleThreads(callback)
+    }
+
+    afterEach {
+        console.stop()
+    }
+
+    "should show the welcome screen asking for the account number" {
         val (fakeStandardOutput, old) = initCaptureOutput()
         console.run()
         val written = String(fakeStandardOutput.toByteArray())
         written shouldBe "Enter Account Number: "
         restoreOutput(old)
-        console.stop()
     }
 
     "should read account number" {
-        val callback: ConsoleCallback = mockk(relaxed = true)
-        val console = ConsoleThreads(callback)
-        val bis = ByteArrayInputStream(("123456"+System.lineSeparator()).toByteArray())
-        System.setIn(bis)
-
-        console.run()
-        eventually(1000L) {
-            verify { callback.userInput("123456") }
+        fakeUserInput("123456" + System.lineSeparator()).use {
+            console.run()
+            eventually(1000L) {
+                verify { callback.userInput("123456") }
+            }
         }
-        bis.close()
-        console.stop()
     }
 
     "should ask for a pin" {
-        val callback: ConsoleCallback = mockk(relaxed = true)
-        val console = ConsoleThreads(callback)
-        val bis = ByteArrayInputStream(("123456"+System.lineSeparator()).toByteArray())
-        System.setIn(bis)
+        fakeUserInput("123456" + System.lineSeparator()).use {
+            val (fakeStandardOutput, old) = initCaptureOutput()
+            console.run()
 
-        val (fakeStandardOutput, old) = initCaptureOutput()
-        console.run()
+            eventually(1000L) {
+                val written = String(fakeStandardOutput.toByteArray())
+                written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: "
+            }
 
-        eventually(1000L) {
-            val written = String(fakeStandardOutput.toByteArray())
-            written shouldBe "Enter Account Number: " +System.lineSeparator()  + "Enter PIN: "
+            restoreOutput(old)
         }
-
-        restoreOutput(old)
-        console.stop()
     }
 })
 
+private fun fakeUserInput(input: String): ByteArrayInputStream {
+    val bis = ByteArrayInputStream(input.toByteArray())
+    System.setIn(bis)
+    return bis
+}
 
 
 private fun initCaptureOutput(): Pair<ByteArrayOutputStream, PrintStream> {
