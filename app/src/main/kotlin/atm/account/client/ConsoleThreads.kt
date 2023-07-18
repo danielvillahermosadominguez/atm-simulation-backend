@@ -9,6 +9,11 @@ interface ConsoleCallback {
 
 }
 
+object States {
+    fun tst() {
+    }
+}
+
 class ConsoleThreads(val callback: ConsoleCallback) {
     private var isAlive = true
     private lateinit var thread: Thread
