@@ -25,7 +25,7 @@ class ConsoleThreadsTest : FreeSpec({
         console.stop()
     }
 
-  /*  "should show the welcome screen asking for the account number" {
+    "should show the welcome screen asking for the account number" {
         val (fakeStandardOutput, old) = initCaptureOutput()
         console.run()
         val written = String(fakeStandardOutput.toByteArray())
@@ -55,9 +55,9 @@ class ConsoleThreadsTest : FreeSpec({
             restoreOutput(old)
         }
     }
-*/
+
     "should read user pin" {
-        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator() ).use {
+        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator()).use {
             console.run()
             eventually(1000L) {
                 verify { callback.userInput("123456") }
@@ -68,28 +68,28 @@ class ConsoleThreadsTest : FreeSpec({
         }
     }
 
-   /* "should show the transaction screen" {
-        val accountNumber = "123456"
-        val pin = "4345"
-        fakeUserInput(accountNumber + System.lineSeparator() +pin).use {
-            val (fakeStandardOutput, old) = initCaptureOutput()
-            console.run()
+    /* "should show the transaction screen" {
+         val accountNumber = "123456"
+         val pin = "4345"
+         fakeUserInput(accountNumber + System.lineSeparator() +pin).use {
+             val (fakeStandardOutput, old) = initCaptureOutput()
+             console.run()
 
-            eventually(1000L) {
-                val written = String(fakeStandardOutput.toByteArray())
-                var expectedOutput = "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()
-                expectedOutput += "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator()
-                expectedOutput += "1. Withdraw" + System.lineSeparator()
-                expectedOutput += "2. Fund Transfer" + System.lineSeparator()
-                expectedOutput += "3. Exit" + System.lineSeparator()
-                expectedOutput += "Please choose option[3]:" + System.lineSeparator()
-                written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()+
-                        ""
-            }
+             eventually(1000L) {
+                 val written = String(fakeStandardOutput.toByteArray())
+                 var expectedOutput = "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()
+                 expectedOutput += "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator()
+                 expectedOutput += "1. Withdraw" + System.lineSeparator()
+                 expectedOutput += "2. Fund Transfer" + System.lineSeparator()
+                 expectedOutput += "3. Exit" + System.lineSeparator()
+                 expectedOutput += "Please choose option[3]:" + System.lineSeparator()
+                 written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()+
+                         ""
+             }
 
-            restoreOutput(old)
-        }
-    }*/
+             restoreOutput(old)
+         }
+     }*/
 })
 
 private fun fakeUserInput(input: String): ByteArrayInputStream {
