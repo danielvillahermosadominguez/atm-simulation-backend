@@ -13,8 +13,11 @@ class ConsoleThreads(val callback: ConsoleCallback) {
     private lateinit var thread:Thread
     fun run() {
         thread = thread(isDaemon = true) {
+            val reader = BufferedReader(
+                InputStreamReader(System.`in`)
+            )
             while (isAlive) {
-                val input = readLine()
+                val input = reader.readLine()
                 if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
                     println()
