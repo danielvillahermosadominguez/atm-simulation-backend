@@ -21,4 +21,4 @@ si lo ejecutamos en conjunto con el resto da error.
 
 
 
-taking a look to: https://github.com/Tinder/StateMachine
+Tenemos un test fallido, vamos por la transaction screen

@@ -7,7 +7,7 @@ interface ConsoleCallback {
 
 }
 
-enum class ConsoleState { InputAccountNumber, InputAccountPin }
+enum class ConsoleState { InputAccountNumber, InputAccountPin, TransactionScreen }
 
 class ConsoleThreads(val callback: ConsoleCallback) {
     private var isAlive = true
@@ -19,6 +19,9 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                 val input = readLine()
                 if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
+                    if (state == ConsoleState.InputAccountPin) {
+                        state = ConsoleState.TransactionScreen
+                    }
                     if (state == ConsoleState.InputAccountNumber) {
                         state = ConsoleState.InputAccountPin
                     }
@@ -26,6 +29,9 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                     if (state == ConsoleState.InputAccountPin) {
                         println()
                         print("Enter PIN: ")
+                    }
+                    if (state == ConsoleState.TransactionScreen) {
+                        print("Soy transaction screen")
                     }
                 }
             }

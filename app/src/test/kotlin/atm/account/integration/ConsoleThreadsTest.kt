@@ -68,7 +68,7 @@ class ConsoleThreadsTest : FreeSpec({
         }
     }
 
-    /* "should show the transaction screen" {
+    "should show the transaction screen" {
          val accountNumber = "123456"
          val pin = "4345"
          fakeUserInput(accountNumber + System.lineSeparator() +pin).use {
@@ -83,13 +83,13 @@ class ConsoleThreadsTest : FreeSpec({
                  expectedOutput += "2. Fund Transfer" + System.lineSeparator()
                  expectedOutput += "3. Exit" + System.lineSeparator()
                  expectedOutput += "Please choose option[3]:" + System.lineSeparator()
-                 written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()+
+                 written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()+ expectedOutput
                          ""
              }
 
              restoreOutput(old)
          }
-     }*/
+     }
 })
 
 private fun fakeUserInput(input: String): ByteArrayInputStream {
