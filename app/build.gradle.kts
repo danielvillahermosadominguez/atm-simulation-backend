@@ -61,7 +61,8 @@ dependencies {
     implementation("io.arrow-kt:arrow-core:1.2.0-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
-    implementation("com.tinder.statemachine:statemachine:0.3.0")
+    implementation("io.github.nsk90:kstatemachine:0.22.1")
+    implementation("io.github.nsk90:kstatemachine-coroutines:0.22.1")
 
 
 }
