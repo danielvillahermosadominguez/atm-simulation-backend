@@ -7,40 +7,58 @@ interface ConsoleCallback {
 
 }
 
-enum class ConsoleState
+
+enum class ConsoleState(private val nextState: ConsoleState?)
 {
-    InputAccountNumber,
-    InputAccountPin,
-    TransactionScreen
+
+    TransactionScreen(null),
+    InputAccountPin(TransactionScreen),
+    InputAccountNumber(InputAccountPin);
+
+    var data: List<String> = emptyList<String>()
+
+    fun nextState(event: Event): ConsoleState? {
+        val data = event.data
+        val nextState = this.nextState
+        nextState?.data = this.data + data
+        return nextState
+    }
+}
+
+data class Event(val data: String)
+
+
+class StateMachine(var state: ConsoleState? = ConsoleState.InputAccountNumber) {
+    fun nextState(event: Event) {
+        state = state?.nextState(event)
+    }
 }
 
 class ConsoleThreads(val callback: ConsoleCallback) {
     private var isAlive = true
     private lateinit var thread: Thread
-    private var state = ConsoleState.InputAccountNumber
-    private var accountNumber: String? = null
-    private var pin: String? = null
+    //private var state = ConsoleState.InputAccountNumber
+    //private var accountNumber: String? = null
+    //private var pin: String? = null
+
+    private var stateMachine = StateMachine()
+
     fun run() {
         thread = thread(isDaemon = true) {
             while (isAlive) {
                 val input = readLine()
                 if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
-                    if (state == ConsoleState.InputAccountPin) {
-                        state = ConsoleState.TransactionScreen
-                        pin = input
-                    }
-                    if (state == ConsoleState.InputAccountNumber) {
-                        state = ConsoleState.InputAccountPin
-                        accountNumber = input
-                    }
+                    stateMachine.nextState(Event(input))
 
-                    if (state == ConsoleState.InputAccountPin) {
+                    if (stateMachine.state == ConsoleState.InputAccountPin) {
                         println()
                         print("Enter PIN: ")
                     }
-                    if (state == ConsoleState.TransactionScreen) {
+                    if (stateMachine.state == ConsoleState.TransactionScreen) {
                         println()
+                        val accountNumber = stateMachine.state?.data?.get(0)
+                        val pin = stateMachine.state?.data?.get(1)
                         var output = "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator()
                         output += "1. Withdraw" + System.lineSeparator()
                         output += "2. Fund Transfer" + System.lineSeparator()
@@ -52,7 +70,7 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                 }
             }
         }
-        if (state == ConsoleState.InputAccountNumber) {
+        if (stateMachine.state == ConsoleState.InputAccountNumber) {
             print("Enter Account Number: ")
         }
     }
