@@ -7,12 +7,19 @@ interface ConsoleCallback {
 
 }
 
-enum class ConsoleState { InputAccountNumber, InputAccountPin, TransactionScreen }
+enum class ConsoleState
+{
+    InputAccountNumber,
+    InputAccountPin,
+    TransactionScreen
+}
 
 class ConsoleThreads(val callback: ConsoleCallback) {
     private var isAlive = true
     private lateinit var thread: Thread
     private var state = ConsoleState.InputAccountNumber
+    private var accountNumber: String? = null
+    private var pin: String? = null
     fun run() {
         thread = thread(isDaemon = true) {
             while (isAlive) {
@@ -21,9 +28,11 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                     callback.userInput(input)
                     if (state == ConsoleState.InputAccountPin) {
                         state = ConsoleState.TransactionScreen
+                        pin = input
                     }
                     if (state == ConsoleState.InputAccountNumber) {
                         state = ConsoleState.InputAccountPin
+                        accountNumber = input
                     }
 
                     if (state == ConsoleState.InputAccountPin) {
@@ -31,8 +40,15 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                         print("Enter PIN: ")
                     }
                     if (state == ConsoleState.TransactionScreen) {
-                        print("Soy transaction screen")
+                        println()
+                        var output = "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator()
+                        output += "1. Withdraw" + System.lineSeparator()
+                        output += "2. Fund Transfer" + System.lineSeparator()
+                        output += "3. Exit" + System.lineSeparator()
+                        output += "Please choose option[3]:" + System.lineSeparator()
+                        print(output)
                     }
+
                 }
             }
         }

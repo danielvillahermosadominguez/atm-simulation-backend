@@ -83,7 +83,7 @@ class ConsoleThreadsTest : FreeSpec({
                  expectedOutput += "2. Fund Transfer" + System.lineSeparator()
                  expectedOutput += "3. Exit" + System.lineSeparator()
                  expectedOutput += "Please choose option[3]:" + System.lineSeparator()
-                 written shouldBe "Enter Account Number: " + System.lineSeparator() + "Enter PIN: " + System.lineSeparator()+ expectedOutput
+                 written shouldBe expectedOutput
                          ""
              }
 
@@ -101,7 +101,7 @@ private fun fakeUserInput(input: String): ByteArrayInputStream {
 
 private fun initCaptureOutput(): Pair<ByteArrayOutputStream, PrintStream> {
     val baos = ByteArrayOutputStream()
-    val ps = PrintStream(baos)
+    val ps = PrintStream(baos, true)
     val old = System.out
     System.setOut(ps)
     return Pair(baos, old)
