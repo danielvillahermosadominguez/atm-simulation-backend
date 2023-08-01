@@ -10,8 +10,8 @@ interface ConsoleCallback {
 
 enum class ConsoleState(private val nextState: ConsoleState?)
 {
-
-    TransactionScreen(null),
+    WithdrawScreen(null),
+    TransactionScreen(WithdrawScreen),
     InputAccountPin(TransactionScreen),
     InputAccountNumber(InputAccountPin);
 
@@ -64,6 +64,16 @@ class ConsoleThreads(val callback: ConsoleCallback) {
                         output += "2. Fund Transfer" + System.lineSeparator()
                         output += "3. Exit" + System.lineSeparator()
                         output += "Please choose option[3]:" + System.lineSeparator()
+                        print(output)
+                    }
+
+                    if(stateMachine.state == ConsoleState.WithdrawScreen) {
+                        println()
+                        var output = "1. $10" + System.lineSeparator()
+                        output += "2. $50" + System.lineSeparator()
+                        output += "3. $100" + System.lineSeparator()
+                        output += "4. Other" + System.lineSeparator()
+                        output += "Please choose options[5]:" + System.lineSeparator()
                         print(output)
                     }
 
