@@ -37,15 +37,15 @@ class StateMachine(var state: ConsoleState? = ConsoleState.InputAccountNumber) {
 class ConsoleThreads(val callback: ConsoleCallback) {
     private var isAlive = true
     private lateinit var thread: Thread
-    //private var state = ConsoleState.InputAccountNumber
-    //private var accountNumber: String? = null
-    //private var pin: String? = null
 
     private var stateMachine = StateMachine()
 
     fun run() {
         thread = thread(isDaemon = true) {
             while (isAlive) {
+                if (stateMachine.state == ConsoleState.InputAccountNumber) {
+                    print("Enter Account Number: ")
+                }
                 val input = readLine()
                 if (input !== null && !input.isNullOrBlank()) {
                     callback.userInput(input)
@@ -79,9 +79,6 @@ class ConsoleThreads(val callback: ConsoleCallback) {
 
                 }
             }
-        }
-        if (stateMachine.state == ConsoleState.InputAccountNumber) {
-            print("Enter Account Number: ")
         }
     }
 

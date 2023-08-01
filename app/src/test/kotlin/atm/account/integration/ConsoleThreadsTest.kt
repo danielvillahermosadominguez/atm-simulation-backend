@@ -28,11 +28,15 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should show the welcome screen asking for the account number" {
-        val (fakeStandardOutput, old) = initCaptureOutput()
-        console.run()
-        val written = String(fakeStandardOutput.toByteArray())
-        written shouldBe "Enter Account Number: "
-        restoreOutput(old)
+        fakeUserInput("-" + System.lineSeparator()).use {
+            val (fakeStandardOutput, old) = initCaptureOutput()
+            console.run()
+            eventually(1000L) {
+                val written = String(fakeStandardOutput.toByteArray())
+                written shouldBe "Enter Account Number: "
+            }
+            restoreOutput(old)
+        }
     }
 
     "should read account number" {
