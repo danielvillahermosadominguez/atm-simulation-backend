@@ -8,23 +8,31 @@ interface ConsoleCallback {
 }
 
 
-enum class ConsoleState(private val nextState: ConsoleState?, val action: (state: ConsoleState) -> Unit) {
-    OtherWithdrawScreen(null, {
+enum class ConsoleState(val nextStateAction: (event: Event) -> ConsoleState?, val action: (state: ConsoleState) -> Unit) {
+    OtherWithdrawScreen({ null }, {
         println()
         var output = "Other Withdraw" + System.lineSeparator()
         output += "Enter amount to withdraw" + System.lineSeparator()
         print(output)
     }),
-    WithdrawScreen(OtherWithdrawScreen, {
-        println()
-        var output = "1. $10" + System.lineSeparator()
-        output += "2. $50" + System.lineSeparator()
-        output += "3. $100" + System.lineSeparator()
-        output += "4. Other" + System.lineSeparator()
-        output += "Please choose options[5]:" + System.lineSeparator()
-        print(output)
-    }),
-    TransactionScreen(WithdrawScreen, {
+    WithdrawScreen(
+            {
+                when (it.data) {
+                    "5" -> TransactionScreen
+                    else -> OtherWithdrawScreen
+                }
+            },
+            {
+                println()
+                var output = "1. $10" + System.lineSeparator()
+                output += "2. $50" + System.lineSeparator()
+                output += "3. $100" + System.lineSeparator()
+                output += "4. Other" + System.lineSeparator()
+                output += "5. Back" + System.lineSeparator()
+                output += "Please choose options[5]:" + System.lineSeparator()
+                print(output)
+            }),
+    TransactionScreen({ WithdrawScreen }, {
         println()
         val accountNumber = it.data?.get(0)
         val pin = it.data?.get(1)
@@ -35,11 +43,11 @@ enum class ConsoleState(private val nextState: ConsoleState?, val action: (state
         output += "Please choose option[3]:" + System.lineSeparator()
         print(output)
     }),
-    InputAccountPin(TransactionScreen, {
+    InputAccountPin({ TransactionScreen }, {
         println()
         print("Enter PIN: ")
     }),
-    InputAccountNumber(InputAccountPin, { print("Enter Account Number: ") });
+    InputAccountNumber({ InputAccountPin }, { print("Enter Account Number: ") });
 
     var data: List<String> = emptyList<String>()
 
@@ -49,7 +57,7 @@ enum class ConsoleState(private val nextState: ConsoleState?, val action: (state
 
     fun nextState(event: Event): ConsoleState? {
         val data = event.data
-        val nextState = this.nextState
+        val nextState = this.nextStateAction(event)
         nextState?.data = this.data + data
         return nextState
     }
