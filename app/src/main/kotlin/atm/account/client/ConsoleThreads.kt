@@ -9,7 +9,13 @@ interface ConsoleCallback {
 
 
 enum class ConsoleState(private val nextState: ConsoleState?, val action: (state: ConsoleState) -> Unit) {
-    WithdrawScreen(null, {
+    OtherWithdrawScreen(null, {
+        println()
+        var output = "Other Withdraw" + System.lineSeparator()
+        output += "Enter amount to withdraw" + System.lineSeparator()
+        print(output)
+    }),
+    WithdrawScreen(OtherWithdrawScreen, {
         println()
         var output = "1. $10" + System.lineSeparator()
         output += "2. $50" + System.lineSeparator()

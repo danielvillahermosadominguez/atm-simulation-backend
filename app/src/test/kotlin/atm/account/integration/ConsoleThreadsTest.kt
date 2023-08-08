@@ -126,6 +126,34 @@ class ConsoleThreadsTest : FreeSpec({
             restoreOutput(old)
         }
     }
+
+    "should choose the Other screen" {
+        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator() + "1" + System.lineSeparator() + 4 + System.lineSeparator() ).use {
+            console.run()
+            eventually(1000L) {
+                verify { callback.userInput("4") }
+            }
+        }
+    }
+
+    "should show the Other screen" {
+        val accountNumber = "123456"
+        val pin = "4345"
+        fakeUserInput(accountNumber + System.lineSeparator() +pin+ System.lineSeparator() +"1"+System.lineSeparator() + 4 + System.lineSeparator()).use {
+            val (fakeStandardOutput, old) = initCaptureOutput()
+            console.run()
+
+            eventually(1000L) {
+                val written = String(fakeStandardOutput.toByteArray())
+                var expectedOutput = "Other Withdraw" + System.lineSeparator()
+                expectedOutput += "Enter amount to withdraw" + System.lineSeparator()
+                written shouldContain expectedOutput
+                ""
+            }
+
+            restoreOutput(old)
+        }
+    }
 })
 
 private fun fakeUserInput(input: String): ByteArrayInputStream {
