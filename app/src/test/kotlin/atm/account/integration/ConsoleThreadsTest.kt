@@ -28,7 +28,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should show the welcome screen asking for the account number" {
-        fakeUserInput("-" + System.lineSeparator()).use {
+        fakeUserInput(userInput("-")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
             eventually(1000L) {
@@ -40,7 +40,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should read account number" {
-        fakeUserInput("123456" + System.lineSeparator()).use {
+        fakeUserInput(userInput("123456")).use {
             console.run()
             eventually(1000L) {
                 verify { callback.userInput("123456") }
@@ -49,7 +49,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should ask for a pin" {
-        fakeUserInput("123456" + System.lineSeparator()).use {
+        fakeUserInput(userInput("123456")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
 
@@ -63,7 +63,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should read user pin" {
-        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator()).use {
+        fakeUserInput(userInput("123456", "2345")).use {
             console.run()
             eventually(1000L) {
                 verify { callback.userInput("123456") }
@@ -77,7 +77,7 @@ class ConsoleThreadsTest : FreeSpec({
     "should show the transaction screen" {
         val accountNumber = "123456"
         val pin = "4345"
-        fakeUserInput(accountNumber + System.lineSeparator() + pin).use {
+        fakeUserInput(userInput(accountNumber, pin)).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
 
@@ -97,7 +97,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should choose a Withdraw" {
-        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator() + "1" + System.lineSeparator()).use {
+        fakeUserInput(userInput("123456", "2345", "1")).use {
             console.run()
             eventually(1000L) {
                 verify { callback.userInput("1") }
@@ -108,7 +108,7 @@ class ConsoleThreadsTest : FreeSpec({
     "should show the Withdraw screen" {
         val accountNumber = "123456"
         val pin = "4345"
-        fakeUserInput(accountNumber + System.lineSeparator() + pin + System.lineSeparator() + "1" + System.lineSeparator()).use {
+        fakeUserInput(userInput(accountNumber, pin, "1")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
 
@@ -128,10 +128,11 @@ class ConsoleThreadsTest : FreeSpec({
         }
     }
 
+
     "should navigate to Transaction screen when user ask for back in Withdraw screen" {
         val accountNumber = "123456"
         val pin = "4345"
-        fakeUserInput(accountNumber + System.lineSeparator() + pin + System.lineSeparator() + "1" + System.lineSeparator() + "5" + System.lineSeparator()).use {
+        fakeUserInput(userInput(accountNumber, pin, "1", "5")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
 
@@ -152,7 +153,7 @@ class ConsoleThreadsTest : FreeSpec({
     }
 
     "should choose the Other screen" {
-        fakeUserInput("123456" + System.lineSeparator() + "2345" + System.lineSeparator() + "1" + System.lineSeparator() + 4 + System.lineSeparator()).use {
+        fakeUserInput(userInput("123456", "2345", "1", "4")).use {
             console.run()
             eventually(1000L) {
                 verify { callback.userInput("4") }
@@ -163,7 +164,7 @@ class ConsoleThreadsTest : FreeSpec({
     "should show the Other screen" {
         val accountNumber = "123456"
         val pin = "4345"
-        fakeUserInput(accountNumber + System.lineSeparator() + pin + System.lineSeparator() + "1" + System.lineSeparator() + 4 + System.lineSeparator()).use {
+        fakeUserInput(userInput(accountNumber, pin, "1", "4")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
             console.run()
 
@@ -199,3 +200,6 @@ private fun restoreOutput(old: PrintStream) {
     System.out.flush()
     System.setOut(old)
 }
+
+
+fun userInput(vararg input: String): String = input.joinToString("") { it + System.lineSeparator() }
