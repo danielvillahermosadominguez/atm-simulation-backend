@@ -6,6 +6,7 @@ interface ConsoleCallback {
     fun userInput(value: String)
 
 }
+
 data class Event(val data: String)
 
 
@@ -26,7 +27,7 @@ class ConsoleThreads(val callback: ConsoleCallback) {
             stateMachine.state?.currentAction()
             while (isAlive) {
                 val input = readLine()
-                if (input !== null && !input.isNullOrBlank()) {
+                if (input !== null) {
                     callback.userInput(input)
                     stateMachine.nextState(Event(input))
                     stateMachine.state?.currentAction()

@@ -13,6 +13,14 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
+
+fun transactionScreenOutput(accountNumber: String, pin: String) = "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator() +
+        "1. Withdraw" + System.lineSeparator() +
+        "2. Fund Transfer" + System.lineSeparator() +
+        "3. Exit" + System.lineSeparator() +
+        "Please choose option[3]:" + System.lineSeparator()
+
+
 class ConsoleThreadsTest : FreeSpec({
 
     lateinit var callback: ConsoleCallback
@@ -74,13 +82,8 @@ class ConsoleThreadsTest : FreeSpec({
 
             eventually(1000L) {
                 val written = String(fakeStandardOutput.toByteArray())
-                var expectedOutput = "Account number $accountNumber, balance $pin" + System.lineSeparator() + System.lineSeparator()
-                expectedOutput += "1. Withdraw" + System.lineSeparator()
-                expectedOutput += "2. Fund Transfer" + System.lineSeparator()
-                expectedOutput += "3. Exit" + System.lineSeparator()
-                expectedOutput += "Please choose option[3]:" + System.lineSeparator()
+                var expectedOutput = transactionScreenOutput(accountNumber, pin)
                 written shouldContain expectedOutput
-                ""
             }
 
             restoreOutput(old)
@@ -145,6 +148,24 @@ class ConsoleThreadsTest : FreeSpec({
                 val written = String(fakeStandardOutput.toByteArray())
                 var expectedOutput = "Please enter destination account and press enter to continue or press enter to go back to Transaction:"
 
+                written shouldEndWith expectedOutput
+                ""
+            }
+
+            restoreOutput(old)
+        }
+    }
+
+    "should navigate to transaction screen when user press enter" {
+        val accountNumber = "123456"
+        val pin = "4345"
+        fakeUserInput(userInput(accountNumber, pin, "2", "")).use {
+            val (fakeStandardOutput, old) = initCaptureOutput()
+            console.run()
+
+            eventually(1000L) {
+                val written = String(fakeStandardOutput.toByteArray())
+                var expectedOutput = transactionScreenOutput(accountNumber, pin)
                 written shouldEndWith expectedOutput
                 ""
             }
