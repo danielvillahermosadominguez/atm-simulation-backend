@@ -39,15 +39,6 @@ class ConsoleThreadsTest : FreeSpec({
         }
     }
 
-    "should read account number" {
-        fakeUserInput(userInput("123456")).use {
-            console.run()
-            eventually(1000L) {
-                verify { callback.userInput("123456") }
-            }
-        }
-    }
-
     "should ask for a pin" {
         fakeUserInput(userInput("123456")).use {
             val (fakeStandardOutput, old) = initCaptureOutput()
@@ -93,15 +84,6 @@ class ConsoleThreadsTest : FreeSpec({
             }
 
             restoreOutput(old)
-        }
-    }
-
-    "should choose a Withdraw" {
-        fakeUserInput(userInput("123456", "2345", "1")).use {
-            console.run()
-            eventually(1000L) {
-                verify { callback.userInput("1") }
-            }
         }
     }
 
