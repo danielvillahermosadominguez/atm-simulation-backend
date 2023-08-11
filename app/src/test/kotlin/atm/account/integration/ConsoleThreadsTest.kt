@@ -152,6 +152,25 @@ class ConsoleThreadsTest : FreeSpec({
         }
     }
 
+    "should navigate to  Fund Transfer screen - Screen 1" {
+        val accountNumber = "123456"
+        val pin = "4345"
+        fakeUserInput(userInput(accountNumber, pin, "2")).use {
+            val (fakeStandardOutput, old) = initCaptureOutput()
+            console.run()
+
+            eventually(1000L) {
+                val written = String(fakeStandardOutput.toByteArray())
+                var expectedOutput = "Please enter destination account and press enter to continue or press enter to go back to Transaction:"
+
+                written shouldEndWith expectedOutput
+                ""
+            }
+
+            restoreOutput(old)
+        }
+    }
+
     "should choose the Other screen" {
         fakeUserInput(userInput("123456", "2345", "1", "4")).use {
             console.run()
@@ -172,7 +191,7 @@ class ConsoleThreadsTest : FreeSpec({
                 val written = String(fakeStandardOutput.toByteArray())
                 var expectedOutput = "Other Withdraw" + System.lineSeparator()
                 expectedOutput += "Enter amount to withdraw" + System.lineSeparator()
-                written shouldContain expectedOutput
+                written shouldEndWith expectedOutput
                 ""
             }
 
